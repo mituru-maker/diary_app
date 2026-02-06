@@ -148,12 +148,15 @@ class HomePage extends StatelessWidget {
                         icon: Icons.psychology,
                         description: 'あなたの性格を分析',
                         onTap: () async {
-                          final Uri url = Uri.parse('https://mituru-maker.github.io/');
-                          if (!await launchUrl(url)) {
+                          final Uri url = Uri.parse('https://mituru-maker.github.io/shindan_app/');
+                          if (!await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          )) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('リンクを開けませんでした'),
+                                  content: Text('性格診断ページを開けませんでした'),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -166,12 +169,15 @@ class HomePage extends StatelessWidget {
                         icon: Icons.auto_awesome,
                         description: '今日の運勢を占う',
                         onTap: () async {
-                          final Uri url = Uri.parse('https://mituru-maker.github.io/');
-                          if (!await launchUrl(url)) {
+                          final Uri url = Uri.parse('https://mituru-maker.github.io/omikuji-app/');
+                          if (!await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          )) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('リンクを開けませんでした'),
+                                  content: Text('おみくじページを開けませんでした'),
                                   backgroundColor: Colors.red,
                                 ),
                               );
