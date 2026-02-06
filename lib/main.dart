@@ -418,6 +418,13 @@ class _DiaryHomePageState extends State<DiaryHomePage> {
           ),
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.home, color: Color(0xFF5D4E37)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          tooltip: 'ホームに戻る',
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
