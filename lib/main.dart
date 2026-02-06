@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dodge_game_page.dart';
@@ -189,6 +190,10 @@ class DiaryApp extends StatelessWidget {
           seedColor: const Color(0xFFFDFCF0),
           brightness: Brightness.light,
         ),
+        fontFamily: 'Noto Sans JP',
+        textTheme: GoogleFonts.notoSansJpTextTheme(
+          Theme.of(context).textTheme,
+        ),
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFFDFCF0),
         appBarTheme: const AppBarTheme(
@@ -226,22 +231,7 @@ class DiaryApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Color(0xFF8B7355), width: 2),
-          ),
-        ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            fontFamily: 'sans-serif',
-            color: Color(0xFF5D4E37),
-          ),
-          bodyMedium: TextStyle(
-            fontFamily: 'sans-serif',
-            color: Color(0xFF5D4E37),
-          ),
-          titleLarge: TextStyle(
-            fontFamily: 'sans-serif',
-            color: Color(0xFF5D4E37),
-            fontWeight: FontWeight.w600,
+            borderSide: const BorderSide(color: Color(0xFF8B7355)),
           ),
         ),
       ),

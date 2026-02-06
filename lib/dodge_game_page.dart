@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 // 弾除けゲーム画面
@@ -27,6 +28,31 @@ class _DodgeGamePageState extends State<DodgeGamePage>
     )..repeat();
     
     _gameController.addListener(_updateGame);
+    _loadHighScore();
+  }
+
+  // ハイスコアを読み込む
+  Future<void> _loadHighScore() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _highScore = prefs.getInt('dodge_game_high_score') ?? 0;
+      });
+    } catch (e) {
+      setState(() {
+        _highScore = 0;
+      });
+    }
+  }
+
+  // ハイスコアを保存
+  Future<void> _saveHighScore() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('dodge_game_high_score', _highScore);
+    } catch (e) {
+      // 保存失敗時は何もしない
+    }
   }
 
   @override
@@ -66,10 +92,16 @@ class _DodgeGamePageState extends State<DodgeGamePage>
         
         if (distance < 0.05) { // 当たり判定半径
           _gameOver = true;
+          bool isNewRecord = false;
+          
+          // ハイスコア更新チェック
           if (_score > _highScore) {
             _highScore = _score;
+            isNewRecord = true;
+            _saveHighScore(); // 新記録を保存
           }
-          _showGameOverDialog();
+          
+          _showGameOverDialog(isNewRecord);
         }
       }
     });
@@ -95,37 +127,105 @@ class _DodgeGamePageState extends State<DodgeGamePage>
     });
   }
 
-  void _showGameOverDialog() {
+  void _showGameOverDialog(bool isNewRecord) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-            'ゲームオーバー！',
-            style: TextStyle(
-              color: Color(0xFF5D4E37),
-              fontWeight: FontWeight.bold,
-            ),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'ゲームオーバー！',
+                style: TextStyle(
+                  color: Color(0xFF5D4E37),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (isNewRecord) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF8B7355),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    'New Record!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'スコア: $_score',
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFF8B7355),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '今回のスコア',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF5D4E37),
+                    ),
+                  ),
+                  Text(
+                    '$_score',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B7355),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                'ハイスコア: $_highScore',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFFD4C4B0),
-                ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'ベストスコア',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF5D4E37),
+                    ),
+                  ),
+                  Text(
+                    '$_highScore',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFD4C4B0),
+                    ),
+                  ),
+                ],
               ),
+              if (isNewRecord) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF8B7355).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text(
+                    '🎉 新記録達成！おめでとう！ 🎉',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF8B7355),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
           actions: [
@@ -211,13 +311,25 @@ class _DodgeGamePageState extends State<DodgeGamePage>
                       color: Color(0xFF5D4E37),
                     ),
                   ),
-                  Text(
-                    'ハイスコア: $_highScore',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF8B7355),
-                    ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Best: ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFFD4C4B0),
+                        ),
+                      ),
+                      Text(
+                        '$_highScore',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF8B7355),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
