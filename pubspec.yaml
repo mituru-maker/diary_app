@@ -37,6 +37,9 @@ dependencies:
   
   # For data persistence
   shared_preferences: ^2.2.3
+  
+  # For launching external URLs
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
