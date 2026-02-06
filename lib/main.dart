@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dodge_game_page.dart';
 
 // 性格診断画面
 class PersonalityTestScreen extends StatelessWidget {
@@ -333,6 +334,19 @@ class HomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const OmikujiScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _MenuCard(
+                        title: '弾除けゲーム',
+                        icon: Icons.sports_esports,
+                        description: '弾を避けるアクションゲーム',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DodgeGamePage(),
                             ),
                           );
                         },
