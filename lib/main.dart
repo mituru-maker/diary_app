@@ -4,6 +4,174 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:convert';
 
+// 性格診断画面
+class PersonalityTestScreen extends StatelessWidget {
+  const PersonalityTestScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          '性格診断',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.home, color: Color(0xFF5D4E37)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          tooltip: 'ホームに戻る',
+        ),
+        backgroundColor: const Color(0xFFFDFCF0),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.psychology,
+              size: 80,
+              color: Color(0xFF8B7355),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              '性格診断アプリ',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF5D4E37),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '外部サイトで性格診断ができます',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () async {
+                final Uri url = Uri.parse('https://mituru-maker.github.io/shindan_app/');
+                if (!await launchUrl(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                )) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('性格診断ページを開けませんでした'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              icon: const Icon(Icons.launch),
+              label: const Text('性格診断を開く'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8B7355),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// おみくじ画面
+class OmikujiScreen extends StatelessWidget {
+  const OmikujiScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'おみくじ',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.home, color: Color(0xFF5D4E37)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          tooltip: 'ホームに戻る',
+        ),
+        backgroundColor: const Color(0xFFFDFCF0),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.auto_awesome,
+              size: 80,
+              color: Color(0xFF8B7355),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'おみくじアプリ',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF5D4E37),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '外部サイトで今日の運勢が占えます',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () async {
+                final Uri url = Uri.parse('https://mituru-maker.github.io/omikuji-app/');
+                if (!await launchUrl(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                )) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('おみくじページを開けませんでした'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              icon: const Icon(Icons.launch),
+              label: const Text('おみくじを開く'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8B7355),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void main() {
   runApp(const DiaryApp());
 }
@@ -147,42 +315,26 @@ class HomePage extends StatelessWidget {
                         title: '性格診断',
                         icon: Icons.psychology,
                         description: 'あなたの性格を分析',
-                        onTap: () async {
-                          final Uri url = Uri.parse('https://mituru-maker.github.io/shindan_app/');
-                          if (!await launchUrl(
-                            url,
-                            mode: LaunchMode.externalApplication,
-                          )) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('性格診断ページを開けませんでした'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PersonalityTestScreen(),
+                            ),
+                          );
                         },
                       ),
                       _MenuCard(
                         title: 'おみくじ',
                         icon: Icons.auto_awesome,
                         description: '今日の運勢を占う',
-                        onTap: () async {
-                          final Uri url = Uri.parse('https://mituru-maker.github.io/omikuji-app/');
-                          if (!await launchUrl(
-                            url,
-                            mode: LaunchMode.externalApplication,
-                          )) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('おみくじページを開けませんでした'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OmikujiScreen(),
+                            ),
+                          );
                         },
                       ),
                     ],
