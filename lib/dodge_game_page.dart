@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
+import 'core/constants.dart';
 
 // 弾除けゲーム画面
 class DodgeGamePage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _DodgeGamePageState extends State<DodgeGamePage>
     try {
       final prefs = await SharedPreferences.getInstance();
       setState(() {
-        _highScore = prefs.getInt('dodge_game_high_score') ?? 0;
+        _highScore = prefs.getInt(AppConstants.dodgeGameHighScoreKey) ?? 0;
       });
     } catch (e) {
       setState(() {
@@ -49,7 +50,7 @@ class _DodgeGamePageState extends State<DodgeGamePage>
   Future<void> _saveHighScore() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('dodge_game_high_score', _highScore);
+      await prefs.setInt(AppConstants.dodgeGameHighScoreKey, _highScore);
     } catch (e) {
       // 保存失敗時は何もしない
     }

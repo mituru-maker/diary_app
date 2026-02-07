@@ -4,7 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:html' as html;
 import 'dodge_game_page.dart';
+import 'core/constants.dart';
 
 // 性格診断画面
 class PersonalityTestScreen extends StatelessWidget {
@@ -243,6 +245,11 @@ class DiaryApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  // 外部リンクを新しいタブで開く
+  void _launchExternalURL(String url) {
+    html.window.open(url, '_blank');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,60 +295,7 @@ class HomePage extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    children: [
-                      _MenuCard(
-                        title: '1行日記',
-                        icon: Icons.edit_note,
-                        description: '今日の思い出を記録',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DiaryHomePage(),
-                            ),
-                          );
-                        },
-                      ),
-                      _MenuCard(
-                        title: '性格診断',
-                        icon: Icons.psychology,
-                        description: 'あなたの性格を分析',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PersonalityTestScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      _MenuCard(
-                        title: 'おみくじ',
-                        icon: Icons.auto_awesome,
-                        description: '今日の運勢を占う',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const OmikujiScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      _MenuCard(
-                        title: '弾除けゲーム',
-                        icon: Icons.sports_esports,
-                        description: '弾を避けるアクションゲーム',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DodgeGamePage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                    children: _buildMenuCards(context),
                   ),
                 ),
               ],
@@ -350,6 +304,62 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // メニューカードのリストを構築
+  List<Widget> _buildMenuCards(BuildContext context) {
+    return [
+      _MenuCard(
+        title: '1行日記',
+        icon: Icons.edit_note,
+        description: '今日の思い出を記録',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DiaryHomePage(),
+            ),
+          );
+        },
+      ),
+      _MenuCard(
+        title: '性格診断',
+        icon: Icons.psychology,
+        description: 'あなたの性格を分析',
+        onTap: () {
+          _launchExternalURL(AppConstants.personalityTestUrl);
+        },
+      ),
+      _MenuCard(
+        title: 'おみくじ',
+        icon: Icons.auto_awesome,
+        description: '今日の運勢を占う',
+        onTap: () {
+          _launchExternalURL(AppConstants.omikujiUrl);
+        },
+      ),
+      _MenuCard(
+        title: 'モグラたたき',
+        icon: Icons.pest_control,
+        description: 'モグラを叩くゲーム',
+        onTap: () {
+          _launchExternalURL(AppConstants.moguraTatakiUrl);
+        },
+      ),
+      _MenuCard(
+        title: '弾除けゲーム',
+        icon: Icons.sports_esports,
+        description: '弾を避けるアクションゲーム',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DodgeGamePage(),
+            ),
+          );
+        },
+      ),
+    ];
   }
 }
 
