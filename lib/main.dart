@@ -295,6 +295,7 @@ class HomePage extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
+                    childAspectRatio: 1.2, // 少し縦長にして6つのタイルに対応
                     children: _buildMenuCards(context),
                   ),
                 ),
@@ -344,6 +345,14 @@ class HomePage extends StatelessWidget {
         description: 'モグラを叩くゲーム',
         onTap: () {
           _launchExternalURL(AppConstants.moguraTatakiUrl);
+        },
+      ),
+      _MenuCard(
+        title: 'AIエコ・シェフ（献立提案）',
+        icon: Icons.restaurant,
+        description: '冷蔵庫の食材で献立を提案',
+        onTap: () {
+          _launchExternalURL(AppConstants.aiEcoChefUrl);
         },
       ),
       _MenuCard(
